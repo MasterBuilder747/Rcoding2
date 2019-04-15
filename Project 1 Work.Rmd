@@ -1,0 +1,60 @@
+---
+title: "Course Project 1"
+author: "Joseph Audras and Devin Romines"
+date: "April 12, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,warning = FALSE,message = FALSE)
+```
+
+# Introduction
+
+```{r}
+AppData <- read.csv("googleplaystore.csv")
+AppReviews <- read.csv("googleplaystore_user_reviews.csv")
+```
+
+```{r}
+library(tidyverse)
+library(lubridate)
+```
+
+[Placeholder] (Devin writes)
+
+# Data Dictionary
+
+## Google Play Store App Data
+
+[Placeholder] (Devin writes)
+
+## Google Play Store User Reviews
+
+[Placeholder] (Devin writes)
+
+# Preparing the Data
+
+## Google Play Store App Data
+
+[Placeholder] (Mostly Joseph and some of Devin)
+
+## Google Play Store User Reviews
+
+[Placeholder] (Mostly Joseph and some of Devin)
+
+# Exploratory Data Analysis
+
+[Placeholder] (Together)
+
+# Placeholder Section A
+
+[Placeholder] (To be determined)
+
+# Placeholder Section B
+
+[Placeholder] (To be determined)
+
+# Conclusion
+
+[Placeholder] (Together, Devin writes)
