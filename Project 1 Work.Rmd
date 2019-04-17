@@ -86,7 +86,29 @@ Sentiment_Subjectivity – Numerical, range from -1 to +1.  The Sentiment Subjec
 
 # rating: some ratings have a NaN, exlude those rows with those values
 
-# 
+# reviews: cast to num
+
+# size: remove any "varies with device" rows
+# convert k, M, B to numbers and to appropriate nums and cast after
+
+# installs: remove + and ,
+# cast to num
+
+# type: remove entire category
+
+# price: remove $, "Everyone", 
+
+# content rating: ok
+
+# genre: no changes
+
+# last updated: convert to num 
+# syntax: xxyyzz
+# where xx month, yy day, zz year
+
+# remove version
+
+# remove android version
 
 ```
 
