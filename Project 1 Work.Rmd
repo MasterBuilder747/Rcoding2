@@ -12,19 +12,14 @@ knitr::opts_chunk$set(echo = TRUE,warning = FALSE,message = FALSE)
 # Introduction
 
 ```{r}
-AppData <- read.csv("googleplaystore.csv")
-AppReviews <- read.csv("googleplaystore_user_reviews.csv")
-
-# test
-# test joseph
+df <- read.csv("googleplaystore.csv")
+dfReviews <- read.csv("googleplaystore_user_reviews.csv")
 ```
 
 ```{r}
 library(tidyverse)
 library(lubridate)
 ```
-
-[Placeholder] (Devin writes)
 
 # Data Dictionary
 
