@@ -9,8 +9,8 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE,warning = FALSE,message = FALSE)
 ```
 
-
 # Introduction
+dataset source: https://www.kaggle.com/lava18/google-play-store-apps
 
 ```{r}
 df <- read.csv("googleplaystore.csv")
@@ -22,15 +22,50 @@ library(tidyverse)
 library(lubridate)
 ```
 
-# Data Dictionary
+# Data dictionary
 
 # App list
 
-[Devin]
+App – Factor, 9660 levels – The name of the app.
 
-# App Reviews
+Category – Factor, 34 levels – The general type of app, such as Dating, Cooking, or Art and Design
 
-[Devin]
+Rating – Numerical, range from 0-5 – The rating of the app on a scale from 0-5.
+
+Reviews – Factor, 6002 levels – The number of reviews that the app received.
+
+Size – Factor, 462 levels – The size in megabytes of the app.
+
+Installs – Factor, 22 levels – The number of installations an app received, given in terms of 0+ 1,000,000,000+
+
+Type – Factor, 4 levels – Whether or not the app is free.
+
+Price – Factor, 93 levels – The Price of the app given as a factor.
+
+Content.Rating – Factor, 7 levels – The rating for the app, E for Everyone, Adults only 18+, etc.
+
+Genres – Factor, 120 levels – The genre of the app, Action, Action and Adventure, etc.
+
+Last.Updated – Factor, 1378 levels – The date on which the app was last updated, given in multiple formats.
+
+Current.Ver – Factor, 2834 levels – The current version of the app, 0.0.0.2, 0.0.1, etc.
+
+Android.Ver – Factor, 35 levels – The version of Android phone required to use the app, given in the form, “version and up”
+
+
+# App review vars - dfReviews
+
+App – Factor, 1074 levels – The name of the app.
+
+Translated_Review – Factor, 27995 levels – The actual, unedited text of the user reviews, containing many grammatical and spelling errors.
+
+Sentiment – Factor, 4 levels – The self-reported mood the user associated with the particular app, positive, negative, etc.
+
+Sentiment_Polarity – Numerical, range from -1 to +1.  The Sentiment Polarity value as calculated from Sentiment Analysis, based on the Sentiment variable.  More information can be found at this link https://en.wikipedia.org/wiki/Sentiment_analysis.
+
+Sentiment_Subjectivity – Numerical, range from -1 to +1.  The Sentiment Subjectivity value as calculated from Sentiment Analysis, based on the Sentiment variable.  More information can be found at this link https://en.wikipedia.org/wiki/Sentiment_analysis.
+
+
 
 # Data Cleaning
 
