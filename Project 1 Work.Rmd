@@ -12,6 +12,9 @@ knitr::opts_chunk$set(echo = TRUE,warning = FALSE,message = FALSE)
 # Introduction
 dataset source: https://www.kaggle.com/lava18/google-play-store-apps
 
+# Description
+
+
 ```{r}
 df <- read.csv("googleplaystore.csv")
 dfReviews <- read.csv("googleplaystore_user_reviews.csv")
@@ -69,6 +72,21 @@ Sentiment_Subjectivity – Numerical, range from -1 to +1.  The Sentiment Subjec
 
 # Data Cleaning
 
+# App df:
+
+```{r}
+
+# App: there are some broken characters from other languages, ignore and exlude rows
+
+# Cateogry: no changes
+
+# rating: some ratings have a NaN, exlude those rows with those values
+
+# 
+
+```
+
+# Reviews df:
 ```{r}
 
 
