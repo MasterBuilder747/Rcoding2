@@ -14,6 +14,10 @@ dataset source: https://www.kaggle.com/lava18/google-play-store-apps
 
 # Description
 
+The Google Play Store Data Set is a data set containing data on over 10,000 apps in the Google Play Store for Android products.  The data set looks at things such as rating, number of installations, and genre to produce a plethora of information on each app.  In addition to this data set, we are also looking at the google Play Store User Review Data Set, which contains the actual content on approximately 65,000 user reviews of apps.  Additional data for this set contains some Sentiment Analysis values for the perceived mood of a particular review.
+
+The data sets were gathered from https://www.kaggle.com/lava18/google-play-store-apps which was last updated 2 months ago, giving us Version 6 which we are working with.  The data was posted by Lavanya Gupta, a software engineer at HSBC Software Development in India.  More information on her can be found here https://www.kaggle.com/lava18.  The information in the data set was scraped from the Google Play Store by Lavanya Gupta, in an effort to provide similar information on its apps as is publically available from the Apple App Store so that developers may be more inclined to work in the Android market.
+
 
 ```{r}
 df <- read.csv("googleplaystore.csv")
