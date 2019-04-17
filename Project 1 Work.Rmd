@@ -24,12 +24,21 @@ library(lubridate)
 
 # Data Dictionary
 
-```{r}
+# App list
 
-```
+[Devin]
+
+# App Reviews
+
+[Devin]
 
 # Data Cleaning
 
+```{r}
+
+
+
+```
 
 # Exploratory Data Analysis
 
