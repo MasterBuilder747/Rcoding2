@@ -20,11 +20,6 @@ The data sets were gathered from https://www.kaggle.com/lava18/google-play-store
 
 
 ```{r}
-df <- read.csv("googleplaystore.csv")
-dfReviews <- read.csv("googleplaystore_user_reviews.csv")
-```
-
-```{r}
 library(tidyverse)
 library(lubridate)
 ```
@@ -76,46 +71,64 @@ Sentiment_Subjectivity – Numerical, range from -1 to +1.  The Sentiment Subjec
 
 # Data Cleaning
 
-# App df:
+# App df: inject all changes to df2
 
 ```{r}
+# rerun here for testing
+df <- read.csv("googleplaystore.csv")
 
 # App: there are some broken characters from other languages, ignore and exlude rows
+# df <- readLines("googleplaystore.csv")
+# df2 <- gsub('Ã','',df)
+# ABORT
+# df$Installs <- gsub("[^[:alnum:]///' ]", "", df$Installs)
 
+# row is corrupted
+df <- df[-c(10473), ]
 # Cateogry: no changes
 
 # rating: some ratings have a NaN, exlude those rows with those values
+df <- df[-grep("NaN", df$Rating),]
 
 # reviews: cast to num
+df$Reviews <- as.numeric(as.character(df$Reviews))
 
 # size: remove any "varies with device" rows
+# df[- grep("Varies with device", df$Size),]
+# delete files size, not relevent
+df <- df[, -5]
+
 # convert k, M, B to numbers and to appropriate nums and cast after
 
 # installs: remove + and ,
+df$Installs <- gsub("\\D", "", df$Installs)
 # cast to num
+df$Installs <- as.numeric(as.character(df$Installs))
 
 # type: remove entire category
+df <- df[, -6]
 
 # price: remove $, "Everyone", 
+df$Price <- gsub("[[:punct:]]", "", df$Price)
+df$Price <- as.numeric(df$Price)
+df$Price <- df$Price/100
 
 # content rating: ok
 
 # genre: no changes
 
 # last updated: convert to num 
+
 # syntax: xxyyzz
 # where xx month, yy day, zz year
 
+# convert to num
+
 # remove version
+df <- df[, -10]
 
 # remove android version
-
-```
-
-# Reviews df:
-```{r}
-
-
+df <- df[, -10]
 
 ```
 
