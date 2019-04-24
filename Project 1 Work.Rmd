@@ -134,12 +134,23 @@ df <- df[, -10]
 
 # Exploratory Data Analysis
 
+```{r}
+library(ggplot2)
 
-# Placeholder Section A
+plot(Rating ~ log(Reviews), data = df)
 
+plot(Rating ~ log(Installs), data = df)
 
-# Placeholder Section B
+plot(Rating ~ log(Price), data = df)
 
+boxplot(Rating ~ Content.Rating, data = df)
+
+boxplot(log(Installs) ~ Content.Rating, data = df)
+
+plot(log(Installs) ~ log(Price), data = df)
+
+boxplot(Rating ~ Category, data = df)
+```
 
 # Conclusion
 
