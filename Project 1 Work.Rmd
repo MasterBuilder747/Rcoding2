@@ -1,6 +1,6 @@
 ---
 title: "Course Project 1"
-author: "Joseph Audras and Devin Romines"
+author: "Devin Romines and Joseph Audras"
 date: "April 12, 2019"
 output: html_document
 ---
@@ -10,147 +10,186 @@ knitr::opts_chunk$set(echo = TRUE,warning = FALSE,message = FALSE)
 ```
 
 # Introduction
-dataset source: https://www.kaggle.com/lava18/google-play-store-apps
 
-# Description
+Dataset Source: https://www.kaggle.com/lava18/google-play-store-apps
 
-The Google Play Store Data Set is a data set containing data on over 10,000 apps in the Google Play Store for Android products.  The data set looks at things such as rating, number of installations, and genre to produce a plethora of information on each app.  In addition to this data set, we are also looking at the google Play Store User Review Data Set, which contains the actual content on approximately 65,000 user reviews of apps.  Additional data for this set contains some Sentiment Analysis values for the perceived mood of a particular review.
+## Description
 
-The data sets were gathered from https://www.kaggle.com/lava18/google-play-store-apps which was last updated 2 months ago, giving us Version 6 which we are working with.  The data was posted by Lavanya Gupta, a software engineer at HSBC Software Development in India.  More information on her can be found here https://www.kaggle.com/lava18.  The information in the data set was scraped from the Google Play Store by Lavanya Gupta, in an effort to provide similar information on its apps as is publically available from the Apple App Store so that developers may be more inclined to work in the Android market.
+The Google Play Store Data Set is a data set containing data on over 10,000 apps in the Google Play Store for Android products.  The data set looks at things such as rating, number of installations, and genre to produce a plethora of information on each app.  For this project, we would like to see if the rating of the app can be accurately predicted by the variables provided in the data set.
 
+The data set was gathered from https://www.kaggle.com/lava18/google-play-store-apps which was last updated 2 months ago, giving us Version 6, with which we are working.  The data was posted by Lavanya Gupta, a software engineer at HSBC Software Development in India.  More information on her can be found here https://www.kaggle.com/lava18.  The information in the data set was scraped from the Google Play Store by Lavanya Gupta, in an effort to provide similar information on its apps as is publically available from the Apple App Store so that developers may be more inclined to work in the Android market.
 
 ```{r}
 library(tidyverse)
 library(lubridate)
+library(ggplot2)
 ```
 
-# Data dictionary
+# Data Dictionary
 
-# App list
+* App – Factor, 9660 levels – The name of the app.
 
-App – Factor, 9660 levels – The name of the app.
+* Category – Factor, 34 levels – The general type of app, such as Dating, Cooking, or Art and Design
 
-Category – Factor, 34 levels – The general type of app, such as Dating, Cooking, or Art and Design
+* Rating – Numerical, range from 0-5 – The rating of the app on a scale from 0-5.
 
-Rating – Numerical, range from 0-5 – The rating of the app on a scale from 0-5.
+* Reviews – Number, very wide range – The number of reviews that the app received.
 
-Reviews – Factor, 6002 levels – The number of reviews that the app received.
+* Size (Removed in Cleaning) – Factor, 462 levels – The size in megabytes of the app.
 
-Size – Factor, 462 levels – The size in megabytes of the app.
+* Installs – Number, given as a factor of 10 – The number of installations an app received.
 
-Installs – Factor, 22 levels – The number of installations an app received, given in terms of 0+ 1,000,000,000+
+* Type (Removed in Cleaning) – Factor, 4 levels – Whether or not the app is free.
 
-Type – Factor, 4 levels – Whether or not the app is free.
+* Price – Number, mostly 0 but some go very high – The Price of the app.
 
-Price – Factor, 93 levels – The Price of the app given as a factor.
+* Content.Rating – Factor, 4 levels – The rating for the app, Everyone, Everyone 10+, Mature 17+, and Teen.
 
-Content.Rating – Factor, 7 levels – The rating for the app, E for Everyone, Adults only 18+, etc.
+* Genres – Factor, 120 levels – The genre of the app, Action, Action and Adventure, etc.
 
-Genres – Factor, 120 levels – The genre of the app, Action, Action and Adventure, etc.
+* Last.Updated – Factor, 1378 levels – The date on which the app was last updated, given in multiple formats.
 
-Last.Updated – Factor, 1378 levels – The date on which the app was last updated, given in multiple formats.
+* Current.Ver (Removed in Cleaning) – Factor, 2834 levels – The current version of the app, 0.0.0.2, 0.0.1, etc.
 
-Current.Ver – Factor, 2834 levels – The current version of the app, 0.0.0.2, 0.0.1, etc.
-
-Android.Ver – Factor, 35 levels – The version of Android phone required to use the app, given in the form, “version and up”
-
-
-# App review vars - dfReviews
-
-App – Factor, 1074 levels – The name of the app.
-
-Translated_Review – Factor, 27995 levels – The actual, unedited text of the user reviews, containing many grammatical and spelling errors.
-
-Sentiment – Factor, 4 levels – The self-reported mood the user associated with the particular app, positive, negative, etc.
-
-Sentiment_Polarity – Numerical, range from -1 to +1.  The Sentiment Polarity value as calculated from Sentiment Analysis, based on the Sentiment variable.  More information can be found at this link https://en.wikipedia.org/wiki/Sentiment_analysis.
-
-Sentiment_Subjectivity – Numerical, range from -1 to +1.  The Sentiment Subjectivity value as calculated from Sentiment Analysis, based on the Sentiment variable.  More information can be found at this link https://en.wikipedia.org/wiki/Sentiment_analysis.
-
-
+* Android.Ver (Removed in Cleaning) – Factor, 35 levels – The version of Android phone required to use the app, given in the form, “version and up”
 
 # Data Cleaning
 
-# App df: inject all changes to df2
+Here we load the data set.
 
 ```{r}
-# rerun here for testing
-df <- read.csv("googleplaystore.csv")
+RawData <- read.csv("googleplaystore.csv")
+```
 
-# App: there are some broken characters from other languages, ignore and exlude rows
-# df <- readLines("googleplaystore.csv")
-# df2 <- gsub('Ã','',df)
-# ABORT
-# df$Installs <- gsub("[^[:alnum:]///' ]", "", df$Installs)
+This next code removes a problematic row that we found to have severe errors when it was inputed.
 
-# row is corrupted
-df <- df[-c(10473), ]
-# Cateogry: no changes
+```{r}
+GooglePlayStore <- RawData[-c(10473), ]
+```
 
-# rating: some ratings have a NaN, exlude those rows with those values
-df <- df[-grep("NaN", df$Rating),]
+Some of the values in the data set for the Rating value, which is the one we are looking at, read as NaN, so we will remove all entries that contain that value.
 
-# reviews: cast to num
-df$Reviews <- as.numeric(as.character(df$Reviews))
+```{r}
+GooglePlayStore <- GooglePlayStore[-grep("NaN", GooglePlayStore$Rating), ]
+```
 
-# size: remove any "varies with device" rows
-# df[- grep("Varies with device", df$Size),]
-# delete files size, not relevent
-df <- df[, -5]
+The Reviews variable was initially given as a factor variable.  Here we change that to be a numeric as it should be.
 
-# convert k, M, B to numbers and to appropriate nums and cast after
+```{r}
+GooglePlayStore$Reviews <- as.numeric(as.character(GooglePlayStore$Reviews))
+```
 
-# installs: remove + and ,
-df$Installs <- gsub("\\D", "", df$Installs)
-# cast to num
-df$Installs <- as.numeric(as.character(df$Installs))
+The size variable was deemed unnecessary for our goals for this project so here we remove it.
 
-# type: remove entire category
-df <- df[, -6]
+```{r}
+GooglePlayStore <- GooglePlayStore[, -5]
+```
 
-# price: remove $, "Everyone", 
-df$Price <- gsub("[[:punct:]]", "", df$Price)
-df$Price <- as.numeric(df$Price)
-df$Price <- df$Price/100
+The Installs variable was initially given as a factor, with undesirable formatting.  Here we remove the characters in the entries we do not want and then convert the Installs variable to a numeric as desired.
 
-# content rating: ok
+```{r}
+GooglePlayStore$Installs <- gsub("\\D", "", GooglePlayStore$Installs)
+GooglePlayStore$Installs <- as.numeric(as.character(GooglePlayStore$Installs))
+```
 
-# genre: no changes
+The Type variable merely indicates whether or not the app is free, which is also given by the better variable, Price, so here we remove it.
 
-# last updated: convert to num 
+```{r}
+GooglePlayStore <- GooglePlayStore[, -6]
+```
 
-# syntax: xxyyzz
-# where xx month, yy day, zz year
+The Price variable is interesting, here we had to remove the dollar sign as we wanted to convert it to a numeric variable; however, when removing the dollar sign we also noticed that the code also removed the decimal point.  To recover it, we simply divided every price by 100.  This solved the problem.
 
-# convert to num
+```{r}
+GooglePlayStore$Price <- gsub("[[:punct:]]", "", GooglePlayStore$Price)
+GooglePlayStore$Price <- as.numeric(GooglePlayStore$Price)
+GooglePlayStore$Price <- GooglePlayStore$Price/100
+```
 
-# remove version
-df <- df[, -10]
+We determined that the Current.Ver variable was irrelevant to our goals, so here we remove it.
 
-# remove android version
-df <- df[, -10]
+```{r}
+GooglePlayStore <- GooglePlayStore[, -10]
+```
 
+We also determined that the Android.Ver variable was irrelevant to our goals, so here we remove that as well.
+
+```{r}
+GooglePlayStore <- GooglePlayStore[, -10]
+```
+
+Here we write the cleaned data set to disk.
+
+```{r}
+write.csv(GooglePlayStore,"Prepared_Google_Play_Store_App_Data.csv",row.names=FALSE)
+```
+
+Because we intend on making a predictive model, here we split the data into a testing and training data set.
+
+```{r}
+set.seed(42)
+
+GooglePlayStoreTemp <- GooglePlayStore %>% mutate(id=row_number())
+Train <- GooglePlayStoreTemp %>% sample_frac(0.6)
+Test <- GooglePlayStoreTemp %>% anti_join(Train,by="id")
+Train$id <- NULL
+Test$id <- NULL
+write.csv(Test,"Test.csv",row.names = FALSE)
+rm(Test,GooglePlayStoreTemp)
 ```
 
 # Exploratory Data Analysis
 
+To begin the exploratory data analysis, let's look at the data set as a whole.
+
 ```{r}
-library(ggplot2)
+summary(Train)
 
-plot(Rating ~ log(Reviews), data = df)
+pairs(Train)
+```
 
-plot(Rating ~ log(Installs), data = df)
+Now, let's look at the individual variables.
 
-plot(Rating ~ log(Price), data = df)
+```{r}
+ggplot(Train) + geom_bar(aes(x=Category)) + coord_flip()
 
-boxplot(Rating ~ Content.Rating, data = df)
+ggplot(Train) + geom_density(aes(x=Rating),fill="light blue")
 
-boxplot(log(Installs) ~ Content.Rating, data = df)
+ggplot(Train) + geom_density(aes(x=log(Reviews)),fill="light green")
 
-plot(log(Installs) ~ log(Price), data = df)
+ggplot(Train) + geom_bar(aes(x=log(Installs)),fill="purple")
 
-boxplot(Rating ~ Category, data = df)
+ggplot(Train) + geom_density(aes(x=log(Price)),fill="gray")
+
+ggplot(Train) + geom_bar(aes(x=Content.Rating)) + coord_flip()
+```
+
+Let's look at some of the relationships between the Rating variable, our response, and some of the possible predictors.
+
+```{r}
+ggplot(Train) + geom_boxplot(aes(x=Category,y=Rating), fill="light green") + coord_flip()
+
+ggplot(Train) + geom_point(aes(x=log(Reviews),y=Rating), color="blue")
+
+ggplot(Train) + geom_point(aes(x=log(Installs),y=Rating), color="purple")
+
+ggplot(Train) + geom_point(aes(x=log(Price),y=Rating), color="red")
+
+ggplot(Train) + geom_violin(aes(x=Content.Rating,y=Rating), trim=FALSE, fill="light blue")
+```
+
+Now, let's look at some of the relationships between the other variables.
+
+```{r}
+ggplot(Train) + geom_boxplot(aes(x=Content.Rating,y=log(Installs)), fill="light green")
+
+ggplot(Train) + geom_point(aes(x=log(Price),y=log(Installs)), color="blue")
 ```
 
 # Conclusion
 
+It appears from the data that the Reviews variable seems quite positively related to the Ratings variable.  While ratings of 5 can be achieved across all Review amounts, they seem to be more common with higher Review amounts.  The same can be said for the Installs variable, in that the more installations a particular app receives could correlate to the rating it is given.  The Price appears to have essentially the opposite effect.  With the exception of free apps, lower priced apps appear to earn higher rating scores thant more expensive apps.  Content rating does not appear to affect an app's rating.
+
+With regard to the other relationships explored, Content Rating seemd very equal across app installations, with apps rated as Everyone had the most variance, probably due to the fact that most of the apps in the data set are rated Everyone, as seen by the Content Rating bar plot earlier.  When price was compared to installations, an almost bubble appeared in the bottom right portion of the plot, indicating that less expensive apps might warrent more installations from users.
+
+Moving forward, we feel that the model we are aiming to create should include the Review, Installs, and Price variables, possibly Genres and Category as well.
