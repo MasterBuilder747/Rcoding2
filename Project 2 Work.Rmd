@@ -11,3 +11,53 @@ knitr::opts_chunk$set(echo = TRUE,warning = FALSE,message = FALSE)
 
 # create project 2 file, project 1 file will not be uploaded
 
+# information embedded in project 2 file, delete later
+
+What should be in Project 2?
+In Project 2, you will be completing your report on a data set in a presentation (slideshow) format.
+
+Remember: In project 1, we included the following sections:
+
+I. Introduction
+
+Data Dictionary
+
+Data Cleaning
+
+Exploratory Data Analysis
+
+And now in Project 2, we will complete this study with the following sections:
+
+V. Questions to answer in this study
+
+Modeling/Hypothesis Testing
+
+Results
+
+Discussion and Conclusions
+
+If you are not happy with where your Project 1 ended up, you can switch data sets; however, you will need parts I through IV for your new data set.
+
+Just to take a closer look at parts V through VIII:
+
+V. Questions to answer in this study
+This should be a list of questions you plan to answer in this study. Often, there is a hierarchy of questions:
+
+Broad questions: Interesting broad questions, but maybe not directly addressable with adata analysis. A big question may be something like “How biodiverse is Wildwood Park?”. Since there is no measurement of biodiversity mentioned here, we could not possibly answer this question directly from data, because we don’t know what to measure.
+Narrow questions: A narrow question will usually be a specification of a broad question, and should indicate technical details that connect directly with measurements we can make. For example, “What is the alpha diversity of avian species in Wildwood Park?” and “What is the beta diversity of avian species in Wildwood Park as an area within the central and south coast?”
+In this section you should also put forward your discussion of how you will answer these questions with models and/or hypothesis tests.
+
+VI. Modeling/Hypothesis Testing
+This should be your work creating models and running hypothesis tests. Model development should be discussed and included here.
+
+VII. Results
+State your (graphical, tabular and numerical) results here. For example, if your team has created a classification model, your confusion matrix should go in this section. The results should answer your narrow questions.
+
+VIII. Discussion and Conclusions
+Discuss your results here. This is the point at which you can answer your broad questions by connecting them with your answers to your narrow questions. For example, suppose that we find out that several common measurements of alpha biodiversity for avians in Wildwood Park are high and that a common measure of beta diversity of avians in Wildwood Park as compared with neighboring regions in the central and south coast is only moderately high. Then we have a nuanced answer to our broad question “How biodiverse is Wildwood Park?” and this is our opportunity to discuss. You may wish to bring in arguments or facts from other research; if you do, make sure to include a works cited section and citations in your discussion.
+
+What should this slideshow and presentation look like?
+You and your team will have 10 minutes to present your work using a slideshow and dialog. Your slideshow should include information from all sections I through VIII. The focus should be strongly on the “important” bits, so we probably won’t need to see the entire data dictionary in the presentation, we’ll only need to see the really tricky bits (if any) of the data cleaning, and we’ll only need to see the important bits of the exploratory data analysis.
+
+You should practice the usual principles of good slideshow design. We will talk about these in class during the last few weeks.
+
