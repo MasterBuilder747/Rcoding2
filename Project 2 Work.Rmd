@@ -1,0 +1,13 @@
+---
+title: "Course Project 2"
+author: "Joseph Audras and Devin Romines"
+date: "April 26, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,warning = FALSE,message = FALSE)
+```
+
+# create project 2 file, project 1 file will not be uploaded
+
