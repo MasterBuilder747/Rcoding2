@@ -13,28 +13,33 @@ knitr::opts_chunk$set(echo = TRUE,warning = FALSE,message = FALSE)
 
 # information embedded in project 2 file, delete later
 
-What should be in Project 2?
-In Project 2, you will be completing your report on a data set in a presentation (slideshow) format.
+# What should be in Project 2?
 
-Remember: In project 1, we included the following sections:
+  In Project 2, you will be completing your report on a data set in a presentation (slideshow) format.
 
 I. Introduction
 
-Data Dictionary
+# Data Dictionary
 
-Data Cleaning
+Devin: copy/reformat project 1 Data Dict here
 
-Exploratory Data Analysis
+# Data Cleaning
+
+Joseph: copy/reformat blocks of code for cleaning from project 1
+
+# Exploratory Data Analysis
+
+Devin: copy/reformat project 1 analysis
 
 And now in Project 2, we will complete this study with the following sections:
 
 V. Questions to answer in this study
 
-Modeling/Hypothesis Testing
+# Modeling/Hypothesis Testing
 
-Results
+# Results
 
-Discussion and Conclusions
+# Discussion and Conclusions
 
 If you are not happy with where your Project 1 ended up, you can switch data sets; however, you will need parts I through IV for your new data set.
 
