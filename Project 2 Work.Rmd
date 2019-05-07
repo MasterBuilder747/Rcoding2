@@ -2,7 +2,9 @@
 title: "Course Project 2"
 author: "Joseph Audras and Devin Romines"
 date: "May 13, 2019"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -199,6 +201,8 @@ Moving forward, we feel that the model we are aiming to create should include th
 ## Big Picture Question
 
 What makes a good app?
+
+test commit on new computer [remove later]
 
 # Modeling/Hypothesis Testing
 
