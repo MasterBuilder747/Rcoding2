@@ -198,15 +198,37 @@ Moving forward, we feel that the model we are aiming to create should include th
 
 # Questions to Answer in This Study
 
-## Big Picture Question
+## Broad Questions
 
-What makes a good app?
+### What makes a good app?
 
-test commit on new computer [remove later]
+We are interested in seeing what attributes or characteristics, if any, of a particular app affect how "good" it is.  Now, "good" is a highly subjective term and with the variety of apps that exist out there, we cannot generalize them into a category of "good" and "bad".  However, for the purposes of our look into this matter, we will be defining the "good"-ness of an app by its rating on a 5 point scale.  This allows us to quantify, to some degree of accuracy, how installers felt about their experience with the app.
+
+### Can we know in advance if an app will be good?
+
+This question is the other side of the coin to the previous question.  Basically, if we know certain characteristics about an app, like genre, price, or content rating, then we can determine how well it will be rated by installers.  We would like to know if this can be done with any of the variables in our data set.
+
+## Narrow Questions
+
+### Can we create a model that accurately predicts an app's user rating based on the number of reviews, number of installations, and price?
+
+After exploring the data set, we found the number of reviews, number of installations, and price to have a somewhat apparent correlation with the app's user rating.  Now, we would like to see if a model can accurately predict that rating while using those variables.
+
+### Can we create a model that accurately predicts and app's user rating based purely on variables that would be known before the app is released, such as content rating, price, or genre.?
+
+This question is an attempt to work with the second broad question, looking purely at information about an app that does not require user data.  Such a model would be useful for app developers that wish to have some idea at an app's success before it hits the market.  This could guide their decisions on what apps to support, develop, and market.
+
+## Discussion
+
+We will be creating two predictive models for our data set to hopefully predict the user rating.  The first will be based on the number of reviews, number of installations, and price, and is hoping to just get a model that is accurate for both the train and test data.  The second model will be based solely on non-user information, such as content rating, genre, and price, and will hopefully be able to provide accurate predictions for both the train and test data.
 
 # Modeling/Hypothesis Testing
 
+## Model 1 (reviews, installs, and price)
 
+```{r}
+Model1 <- lm(Rating ~ I(log())
+```
 
 # Results
 
