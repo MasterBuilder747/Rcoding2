@@ -227,8 +227,11 @@ We will be creating two predictive models for our data set to hopefully predict 
 ## Model 1 (reviews, installs, and price)
 
 ```{r}
-Model1 <- lm(Rating ~ I(log())
+Model1 <- lm(log(Rating) ~ Reviews + Installs + Price, data = Train) # Fix, random forest
+summary(Model1)
 ```
+
+This is the initial creation of the model, with a summary.
 
 # Results
 
