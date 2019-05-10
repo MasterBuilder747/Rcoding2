@@ -224,14 +224,47 @@ We will be creating two predictive models for our data set to hopefully predict 
 
 # Modeling/Hypothesis Testing
 
-## Model 1 (reviews, installs, and price)
+## Model 1 (Unconditional Model Building)
+
+### Model 1.A Random Forest
 
 ```{r}
-Model1 <- lm(log(Rating) ~ Reviews + Installs + Price, data = Train) # Fix, random forest
-summary(Model1)
+library(randomForest)
+set.seed(42)
+Model1.A <- randomForest(I(log(Rating)) ~ Reviews + Installs + Price + Category, data = Train, mtry = 4)
+Model1.A.Prediction <- predict(Model1.A)
+plot(log(Train$Rating),Model1.A.Prediction)
+abline(0,1,col="red")
 ```
 
-This is the initial creation of the model, with a summary.
+This random forest model incorporates the number of reviews, the price, the number of installations, and the category of the app in an effort to predict the rating.  The plot seen above shows the predictions with the line in red showing where the prediction and the rating are equal.  As a note, for the creation of the model, the log(Rating) was used so the plot reflects that, as doing that more evenly distributed the scores.  As can be seen by the plot, the model over estimates lower user rating scores.
+
+```{r}
+Test <- read.csv("Test.csv")
+levels(Test$Category) <- levels(Train$Category)
+Model1.A.Prediction.Test <- predict(Model1.A,newdata=Test)
+plot(log(Test$Rating),Model1.A.Prediction.Test)
+abline(0,1,col="red")
+```
+
+### Model 1.B Linear Model
+
+```{r}
+Model1.B <- lm(Rating ~ I(log(Reviews)) + I(log(Installs)) + Price + Category, data=Train)
+Model1.B.Prediction <- predict(Model1.B)
+summary(Model1.B)
+plot(Train$Rating,Model1.B.Prediction)
+abline(0,1,col="red")
+```
+
+```{r}
+Test <- read.csv("Test.csv")
+Model1.B.Prediction.Test <- predict(Model1.B,newdata=Test)
+plot(Test$Rating,Model1.B.Prediction.Test)
+abline(0,1,col="red")
+```
+
+
 
 # Results
 
