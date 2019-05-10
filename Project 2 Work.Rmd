@@ -323,7 +323,7 @@ The model performs worse when tested against the test data than to the training 
 
 # Results
 
-
+It was determined when the models were built and tested that the Random Forest model was superior to the 
 
 # Discussion and Conclusions
 
