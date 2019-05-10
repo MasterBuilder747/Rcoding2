@@ -224,7 +224,7 @@ We will be creating two predictive models for our data set to hopefully predict 
 
 # Modeling/Hypothesis Testing
 
-## Model 1 (Unconditional Model Building)
+## Model 1 Unconditional Model Building
 
 ### Model 1.A Random Forest
 
@@ -245,7 +245,10 @@ levels(Test$Category) <- levels(Train$Category)
 Model1.A.Prediction.Test <- predict(Model1.A,newdata=Test)
 plot(log(Test$Rating),Model1.A.Prediction.Test)
 abline(0,1,col="red")
+rm(Test)
 ```
+
+Oddly enough, at first glance, the model appears to perform slightly better with the test data, but still overestimates low user rating scores; however, it can be seen this model, while not glowingly accurate, does not perform diffently with never before seen data.
 
 ### Model 1.B Linear Model
 
@@ -257,14 +260,66 @@ plot(Train$Rating,Model1.B.Prediction)
 abline(0,1,col="red")
 ```
 
+This linear model works to predict the rating score with the same predictor variables as the previous model, and it appears to perform quite poorly, only fitting the data around 14%.
+
 ```{r}
 Test <- read.csv("Test.csv")
 Model1.B.Prediction.Test <- predict(Model1.B,newdata=Test)
 plot(Test$Rating,Model1.B.Prediction.Test)
 abline(0,1,col="red")
+rm(Test)
 ```
 
+The data seems to perform worse for the test data set, indicating that the linear model slightly over fits the training data and cannot consistently perform with never before seen data.  Overall, this model is worse than the random forest model discussed previously.
 
+## Model 2 Non-User Data Model Building
+
+### Model 2.A Random Forest
+
+```{r}
+library(randomForest)
+set.seed(42)
+Model2.A <- randomForest(I(log(Rating)) ~ Price + Category + Content.Rating, data = Train, mtry = 3)
+Model2.A.Prediction <- predict(Model2.A)
+plot(log(Train$Rating),Model2.A.Prediction)
+abline(0,1,col="red")
+```
+
+Here, we have a random forest model similar to that of Model 1.A, with the only exception being that it is based upon the data that can be gathered before the app is relased to the public, price, category, and content rating.  Much like in all of the other models, this one also overestimates lower user ratings.
+
+```{r}
+Test <- read.csv("Test.csv")
+levels(Test$Category) <- levels(Train$Category)
+levels(Test$Content.Rating) <- levels(Train$Content.Rating)
+Model1.A.Prediction.Test <- predict(Model1.A,newdata=Test)
+plot(log(Test$Rating),Model1.A.Prediction.Test)
+abline(0,1,col="red")
+rm(Test)
+```
+
+Surprisingly, the model appears to perform better on the test data than it did on the training data.  While it still overestimates, lower user rating scores, it is not as dramatic as with the training data, which is interesting.
+
+### Model 2.B Linear Model
+
+```{r}
+Model2.B <- lm(Rating ~ I(log(Reviews)) + I(log(Installs)) + Price + Category, data=Train)
+Model2.B.Prediction <- predict(Model2.B)
+summary(Model2.B)
+plot(Train$Rating,Model2.B.Prediction)
+abline(0,1,col="red")
+```
+
+This model is depressingly inaccurate, and drastically overestimates lower user rating scores.  It is a linear model based on the same predictors as Model2.A.  Much like Model1.A, it only fits the data about 15%.
+
+```{r}
+Test <- read.csv("Test.csv")
+Model2.B.Prediction.Test <- predict(Model2.B,newdata=Test)
+plot(Test$Rating,Model2.B.Prediction.Test)
+abline(0,1,col="red")
+rm(Test)
+```
+
+The model performs worse when tested against the test data than to the training data.  This indicates that, as poor as the model fit the training data, it is overfitting the data and is not generalizing all of the data well.  It overestimates the lower user rating scores quite a bit.
 
 # Results
 
@@ -280,28 +335,8 @@ abline(0,1,col="red")
 
 # Assignment Document Words
 
-If you are not happy with where your Project 1 ended up, you can switch data sets; however, you will need parts I through IV for your new data set.
-
-Just to take a closer look at parts V through VIII:
-
-V. Questions to answer in this study
-This should be a list of questions you plan to answer in this study. Often, there is a hierarchy of questions:
-
-Broad questions: Interesting broad questions, but maybe not directly addressable with adata analysis. A big question may be something like “How biodiverse is Wildwood Park?”. Since there is no measurement of biodiversity mentioned here, we could not possibly answer this question directly from data, because we don’t know what to measure.
-Narrow questions: A narrow question will usually be a specification of a broad question, and should indicate technical details that connect directly with measurements we can make. For example, “What is the alpha diversity of avian species in Wildwood Park?” and “What is the beta diversity of avian species in Wildwood Park as an area within the central and south coast?”
-In this section you should also put forward your discussion of how you will answer these questions with models and/or hypothesis tests.
-
-VI. Modeling/Hypothesis Testing
-This should be your work creating models and running hypothesis tests. Model development should be discussed and included here.
-
 VII. Results
 State your (graphical, tabular and numerical) results here. For example, if your team has created a classification model, your confusion matrix should go in this section. The results should answer your narrow questions.
 
 VIII. Discussion and Conclusions
 Discuss your results here. This is the point at which you can answer your broad questions by connecting them with your answers to your narrow questions. For example, suppose that we find out that several common measurements of alpha biodiversity for avians in Wildwood Park are high and that a common measure of beta diversity of avians in Wildwood Park as compared with neighboring regions in the central and south coast is only moderately high. Then we have a nuanced answer to our broad question “How biodiverse is Wildwood Park?” and this is our opportunity to discuss. You may wish to bring in arguments or facts from other research; if you do, make sure to include a works cited section and citations in your discussion.
-
-What should this slideshow and presentation look like?
-You and your team will have 10 minutes to present your work using a slideshow and dialog. Your slideshow should include information from all sections I through VIII. The focus should be strongly on the “important” bits, so we probably won’t need to see the entire data dictionary in the presentation, we’ll only need to see the really tricky bits (if any) of the data cleaning, and we’ll only need to see the important bits of the exploratory data analysis.
-
-You should practice the usual principles of good slideshow design. We will talk about these in class during the last few weeks.
-
