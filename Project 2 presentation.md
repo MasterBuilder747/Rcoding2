@@ -49,42 +49,6 @@ Exploratory Data Analysis
 To begin the exploratory data analysis, let's look at the data set as a whole.
 
 
-```
-                                                App      
- CBS Sports App - Scores, News, Stats & Watch Live:   6  
- Nick                                             :   6  
- ROBLOX                                           :   5  
- Subway Surfers                                   :   5  
- 8 Ball Pool                                      :   4  
- AliExpress - Smarter Shopping, Better Living     :   4  
- (Other)                                          :5590  
-            Category        Rating         Reviews        
- FAMILY         :1062   Min.   :1.000   Min.   :       1  
- GAME           : 638   1st Qu.:4.000   1st Qu.:     192  
- TOOLS          : 440   Median :4.300   Median :    6078  
- MEDICAL        : 215   Mean   :4.191   Mean   :  471539  
- PERSONALIZATION: 208   3rd Qu.:4.500   3rd Qu.:   80327  
- PRODUCTIVITY   : 206   Max.   :5.000   Max.   :66509917  
- (Other)        :2851                                     
-                 Size        Type          Price        
- Varies with device: 965   0   :   0   Min.   :  0.000  
- 14M               : 107   Free:5242   1st Qu.:  0.000  
- 15M               : 101   NaN :   0   Median :  0.000  
- 13M               :  99   Paid: 378   Mean   :  1.084  
- 11M               :  93               3rd Qu.:  0.000  
- 12M               :  89               Max.   :400.000  
- (Other)           :4166                                
-         Content.Rating             Genres                 Android.Ver  
-                :   0   Tools          : 440   4.1 and up        :1197  
- Adults only 18+:   2   Entertainment  : 325   Varies with device: 775  
- Everyone       :4490   Education      : 293   4.0.3 and up      : 756  
- Everyone 10+   : 225   Medical        : 215   4.0 and up        : 709  
- Mature 17+     : 254   Action         : 211   4.4 and up        : 532  
- Teen           : 648   Personalization: 208   2.3 and up        : 342  
- Unrated        :   1   (Other)        :3928   (Other)           :1309  
-```
-
-![plot of chunk unnamed-chunk-4](Project 2 presentation-figure/unnamed-chunk-4-1.png)
 
 
 Exploratory Data Analysis part 2
@@ -95,28 +59,57 @@ Now, let's look at the individual variables.
 
 
 
+Exploratory Data Analysis part 3
+===
+
+Now, let's look at some of the relationships between the other variables.
 
 
 
 
-```
-Warning message:
-package 'knitr' was built under R version 3.5.3 
+Broad Questions
+===
+
+### What makes a good app?
+
+[points]
+We are interested in seeing what attributes or characteristics, if any, of a particular app affect how "good" it is.  Now, "good" is a highly subjective term and with the variety of apps that exist out there, we cannot generalize them into a category of "good" and "bad".  However, for the purposes of our look into this matter, we will be defining the "good"-ness of an app by its rating on a 5 point scale.  This allows us to quantify, to some degree of accuracy, how installers felt about their experience with the app.
+
+### Can we know in advance if an app will be good?
+
+This question is the other side of the coin to the previous question.  Basically, if we know certain characteristics about an app, like genre, price, or content rating, then we can determine how well it will be rated by installers.  We would like to know if this can be done with any of the variables in our data set.
 
 
-processing file: Project 2 presentation.Rpres
--- Attaching packages -------------------------------------------- tidyverse 1.2.1 --
-v ggplot2 3.1.1       v purrr   0.3.2  
-v tibble  2.1.1       v dplyr   0.8.0.1
-v tidyr   0.8.3       v stringr 1.4.0  
-v readr   1.3.1       v forcats 0.4.0  
--- Conflicts ----------------------------------------------- tidyverse_conflicts() --
-x dplyr::filter() masks stats::filter()
-x dplyr::lag()    masks stats::lag()
+Narrow Questions
+===
 
-Attaching package: 'lubridate'
+## Can we create a model that accurately predicts an app's user rating based on the number of reviews, number of installations, and price?
 
-The following object is masked from 'package:base':
+After exploring the data set, we found the number of reviews, number of installations, and price to have a somewhat apparent correlation with the app's user rating.  Now, we would like to see if a model can accurately predict that rating while using those variables.
 
-    date
-```
+## Can we create a model that accurately predicts and app's user rating based purely on variables that would be known before the app is released, such as content rating, price, or genre.?
+
+This question is an attempt to work with the second broad question, looking purely at information about an app that does not require user data.  Such a model would be useful for app developers that wish to have some idea at an app's success before it hits the market.  This could guide their decisions on what apps to support, develop, and market.
+
+## Discussion
+
+We will be creating two predictive models for our data set to hopefully predict the user rating.  The first will be based on the number of reviews, number of installations, and price, and is hoping to just get a model that is accurate for both the train and test data.  The second model will be based solely on non-user information, such as content rating, genre, and price, and will hopefully be able to provide accurate predictions for both the train and test data.
+
+## Modeling/Hypothesis Testing
+
+Model 1 (reviews, installs, and price)
+
+
+
+
+
+Conclusion
+===
+
+[summarize]
+It appears from the data that the Reviews variable seems quite positively related to the Ratings variable.  While ratings of 5 can be achieved across all Review amounts, they seem to be more common with higher Review amounts.  The same can be said for the Installs variable, in that the more installations a particular app receives could correlate to the rating it is given.  The Price appears to have essentially the opposite effect.  With the exception of free apps, lower priced apps appear to earn higher rating scores thant more expensive apps.  Content rating does not appear to affect an app's rating.
+
+With regard to the other relationships explored, Content Rating seemd very equal across app installations, with apps rated as Everyone had the most variance, probably due to the fact that most of the apps in the data set are rated Everyone, as seen by the Content Rating bar plot earlier.  When price was compared to installations, an almost bubble appeared in the bottom right portion of the plot, indicating that less expensive apps might warrent more installations from users.
+
+Moving forward, we feel that the model we are aiming to create should include the Review, Installs, and Price variables, possibly Genres and Category as well.
+

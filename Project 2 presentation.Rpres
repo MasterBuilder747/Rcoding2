@@ -16,7 +16,7 @@ The Google Play Store Data Set is a data set containing data on over 10,000 apps
 [summarize]
 The data set was gathered from https://www.kaggle.com/lava18/google-play-store-apps which was last updated 2 months ago, giving us Version 6, with which we are working.  The data was posted by Lavanya Gupta, a software engineer at HSBC Software Development in India.  More information on her can be found here https://www.kaggle.com/lava18.  The information in the data set was scraped from the Google Play Store by Lavanya Gupta, in an effort to provide similar information on its apps as is publically available from the Apple App Store so that developers may be more inclined to work in the Android market.
 
-```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=FALSE}
 library(tidyverse)
 library(lubridate)
 library(ggplot2)
@@ -40,7 +40,7 @@ Data Dictionary
 Data Cleaning
 ===
 
-```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=FALSE}
 # Hidden data; the data cleanup code
 
 RawData <- read.csv("googleplaystore.csv")
@@ -70,7 +70,7 @@ write.csv(GooglePlayStore,"Prepared_Google_Play_Store_App_Data.csv",row.names=FA
 
 Because we intend on making a predictive model, here we split the data into a testing and training data set.
 
-```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE, eval=FALSE}
 set.seed(42)
 
 GooglePlayStoreTemp <- GooglePlayStore %>% mutate(id=row_number())
@@ -88,7 +88,7 @@ Exploratory Data Analysis
 
 To begin the exploratory data analysis, let's look at the data set as a whole.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, eval=FALSE}
 summary(Train)
 
 pairs(Train)
@@ -100,7 +100,7 @@ Exploratory Data Analysis part 2
 
 Now, let's look at the individual variables.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, eval=FALSE}
 ggplot(Train) + geom_bar(aes(x=Category)) + coord_flip()
 
 ggplot(Train) + geom_density(aes(x=Rating),fill="light blue")
@@ -120,7 +120,7 @@ Exploratory Data Analysis part 3
 
 Now, let's look at some of the relationships between the other variables.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, eval=FALSE}
 ggplot(Train) + geom_boxplot(aes(x=Content.Rating,y=log(Installs)), fill="light green")
 
 ggplot(Train) + geom_point(aes(x=log(Price),y=log(Installs)), color="blue")
@@ -143,11 +143,11 @@ This question is the other side of the coin to the previous question.  Basically
 Narrow Questions
 ===
 
-# Can we create a model that accurately predicts an app's user rating based on the number of reviews, number of installations, and price?
+## Can we create a model that accurately predicts an app's user rating based on the number of reviews, number of installations, and price?
 
 After exploring the data set, we found the number of reviews, number of installations, and price to have a somewhat apparent correlation with the app's user rating.  Now, we would like to see if a model can accurately predict that rating while using those variables.
 
-# Can we create a model that accurately predicts and app's user rating based purely on variables that would be known before the app is released, such as content rating, price, or genre.?
+## Can we create a model that accurately predicts and app's user rating based purely on variables that would be known before the app is released, such as content rating, price, or genre.?
 
 This question is an attempt to work with the second broad question, looking purely at information about an app that does not require user data.  Such a model would be useful for app developers that wish to have some idea at an app's success before it hits the market.  This could guide their decisions on what apps to support, develop, and market.
 
@@ -155,11 +155,11 @@ This question is an attempt to work with the second broad question, looking pure
 
 We will be creating two predictive models for our data set to hopefully predict the user rating.  The first will be based on the number of reviews, number of installations, and price, and is hoping to just get a model that is accurate for both the train and test data.  The second model will be based solely on non-user information, such as content rating, genre, and price, and will hopefully be able to provide accurate predictions for both the train and test data.
 
-# Modeling/Hypothesis Testing
+## Modeling/Hypothesis Testing
 
-## Model 1 (reviews, installs, and price)
+Model 1 (reviews, installs, and price)
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, eval=FALSE}
 Model1 <- lm(Rating ~ I(log())
 ```
 
@@ -174,3 +174,4 @@ It appears from the data that the Reviews variable seems quite positively relate
 With regard to the other relationships explored, Content Rating seemd very equal across app installations, with apps rated as Everyone had the most variance, probably due to the fact that most of the apps in the data set are rated Everyone, as seen by the Content Rating bar plot earlier.  When price was compared to installations, an almost bubble appeared in the bottom right portion of the plot, indicating that less expensive apps might warrent more installations from users.
 
 Moving forward, we feel that the model we are aiming to create should include the Review, Installs, and Price variables, possibly Genres and Category as well.
+
