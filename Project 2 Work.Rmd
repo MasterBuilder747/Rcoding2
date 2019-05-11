@@ -210,17 +210,17 @@ This question is the other side of the coin to the previous question.  Basically
 
 ## Narrow Questions
 
-### Can we create a model that accurately predicts an app's user rating based on the number of reviews, number of installations, and price?
+### Can we create a model that accurately predicts an app's user rating based on the number of reviews, number of installations, price, and category?
 
 After exploring the data set, we found the number of reviews, number of installations, and price to have a somewhat apparent correlation with the app's user rating.  Now, we would like to see if a model can accurately predict that rating while using those variables.
 
-### Can we create a model that accurately predicts and app's user rating based purely on variables that would be known before the app is released, such as content rating, price, or genre.?
+### Can we create a model that accurately predicts and app's user rating based purely on variables that would be known before the app is released, such as content rating, price, and category?
 
 This question is an attempt to work with the second broad question, looking purely at information about an app that does not require user data.  Such a model would be useful for app developers that wish to have some idea at an app's success before it hits the market.  This could guide their decisions on what apps to support, develop, and market.
 
 ## Discussion
 
-We will be creating two predictive models for our data set to hopefully predict the user rating.  The first will be based on the number of reviews, number of installations, and price, and is hoping to just get a model that is accurate for both the train and test data.  The second model will be based solely on non-user information, such as content rating, genre, and price, and will hopefully be able to provide accurate predictions for both the train and test data.
+We will be creating two predictive models for our data set to hopefully predict the user rating.  The first will be based on the number of reviews, number of installations, price, and category, and is hoping to just get a model that is accurate for both the train and test data.  The second model will be based solely on non-user information, such as content rating, category, and price, and will hopefully be able to provide accurate predictions for both the train and test data.
 
 # Modeling/Hypothesis Testing
 
@@ -291,8 +291,8 @@ Here, we have a random forest model similar to that of Model 1.A, with the only 
 Test <- read.csv("Test.csv")
 levels(Test$Category) <- levels(Train$Category)
 levels(Test$Content.Rating) <- levels(Train$Content.Rating)
-Model1.A.Prediction.Test <- predict(Model1.A,newdata=Test)
-plot(log(Test$Rating),Model1.A.Prediction.Test)
+Model2.A.Prediction.Test <- predict(Model2.A,newdata=Test)
+plot(log(Test$Rating),Model2.A.Prediction.Test)
 abline(0,1,col="red")
 rm(Test)
 ```
@@ -323,20 +323,24 @@ The model performs worse when tested against the test data than to the training 
 
 # Results
 
-It was determined when the models were built and tested that the Random Forest model was superior to the 
+It was determined when the models were built and tested that the Random Forest models were superior to the linear models.  This determination was based on how close the data points were to the y=x line on the plots, and how many drastic points there were.  This decision was also based on the performance of the models on the test data, in which the Random Forest models performed as well, if not, better, than on the training dat while the linear model was not able to generalize the data to a satisfactory degree.  There were two final models that were developed.  Model1A, a random forest model, incorporated the Category, Reviews, Installs, and Price variables in order to predict the log of the Rating variable.  Its purpose was to try and unconditionally predict the user rating score.  Model2A, a random forest model, incorporated the Category, Price, and Content.Rating variables in order to predict the log of the Rating variable.  Its purpose was to try and conditionally predict the user rating score, with the condition being that only non-user related data could be used.  In other words, only data that could be collected before the app was released to the market could be used.  Overall, both models did not accurately predict the user rating score very well.
+
+```{r}
+library(ggplot2)
+Test <- read.csv("Test.csv")
+ggplot(Train) + geom_point(aes(x=Model1.A.Prediction,y=log(Rating)),color = "blue") +
+  geom_abline(intercept = 0, color = "red")
+ggplot(Test) + geom_point(aes(x=Model1.A.Prediction.Test,y=log(Rating)),color = "green") +
+  geom_abline(intercept = 0, color = "red")
+ggplot(Train) + geom_point(aes(x=Model2.A.Prediction,y=log(Rating)),color = "blue") +
+  geom_abline(intercept = 0, color = "red")
+ggplot(Test) + geom_point(aes(x=Model2.A.Prediction.Test,y=log(Rating)),color = "green") +
+  geom_abline(intercept = 0, color = "red")
+rm(Test)
+```
+
+These plots are the results of the models and their predictions.  Blue models are for training, green models are for testing.  Model 1A is the unconditional model.  Model 2A is the conditional model.
 
 # Discussion and Conclusions
 
-
-
-
-
-
-
-# Assignment Document Words
-
-VII. Results
-State your (graphical, tabular and numerical) results here. For example, if your team has created a classification model, your confusion matrix should go in this section. The results should answer your narrow questions.
-
-VIII. Discussion and Conclusions
-Discuss your results here. This is the point at which you can answer your broad questions by connecting them with your answers to your narrow questions. For example, suppose that we find out that several common measurements of alpha biodiversity for avians in Wildwood Park are high and that a common measure of beta diversity of avians in Wildwood Park as compared with neighboring regions in the central and south coast is only moderately high. Then we have a nuanced answer to our broad question “How biodiverse is Wildwood Park?” and this is our opportunity to discuss. You may wish to bring in arguments or facts from other research; if you do, make sure to include a works cited section and citations in your discussion.
+Overall, our models were not able to generate very accurate cases.  In both conditions, the models tended to overestimate the user rating scores, especially for those who earned very low rating scores.  While we would like to believe this is due to the model's inherent optimism, we feel that this is due to the majority of the user  rating scores being higher values, resulting in a predictive model which tends to moreso pick higher ratings as its predictions.  Also, it should be noted that having the number of installations and the number of reviews greatly aided in the predictive power of the model.  This indicates that there is a real correlation, however difficult to discern, between user-related info and the user rating score.  The models are not at all decent at what they do; meaning that future work should strive to collect more data from different variable sources to try and more accurately determine a user rating score in advance.  This would in turn force us to understand what makes a good app and what people want in their apps.  Provisionally from this study, we can discern that, on average, a free, highly downloaded, highly reviewed, rated E for Everyone app would most likely lead to a high user rating score.  Our research is important because it shows that there is something to being able to predict a user rating score.  This is because the models, though sad as they might be, are not completely incapable, suggesting some form of correlation somewhere.  Being able to predict a user rating score of an app before it launches could be very helpful to businesses and corporations in deciding which apps they will support, and which they will cast off to the side in favor an app with a better predicted outcome on the market.
