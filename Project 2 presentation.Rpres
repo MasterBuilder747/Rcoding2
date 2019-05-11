@@ -1,5 +1,5 @@
 
-Project 2 presentation
+Project 2 Presentation
 ===
 author: Joseph Audras & Devin Romines
 date: May 13, 2019
@@ -16,7 +16,7 @@ The Google Play Store Data Set is a data set containing data on over 10,000 apps
 [summarize]
 The data set was gathered from https://www.kaggle.com/lava18/google-play-store-apps which was last updated 2 months ago, giving us Version 6, with which we are working.  The data was posted by Lavanya Gupta, a software engineer at HSBC Software Development in India.  More information on her can be found here https://www.kaggle.com/lava18.  The information in the data set was scraped from the Google Play Store by Lavanya Gupta, in an effort to provide similar information on its apps as is publically available from the Apple App Store so that developers may be more inclined to work in the Android market.
 
-```{r, echo=FALSE, eval=FALSE}
+```{r, echo=FALSE, eval=TRUE}
 library(tidyverse)
 library(lubridate)
 library(ggplot2)
@@ -37,10 +37,7 @@ Data Dictionary
 * Last.Updated: Factor - The date on which the app was last updated
 
 
-Data Cleaning
-===
-
-```{r, echo=FALSE, eval=FALSE}
+```{r, echo=FALSE, eval=TRUE}
 # Hidden data; the data cleanup code
 
 RawData <- read.csv("googleplaystore.csv")
@@ -70,7 +67,7 @@ write.csv(GooglePlayStore,"Prepared_Google_Play_Store_App_Data.csv",row.names=FA
 
 Because we intend on making a predictive model, here we split the data into a testing and training data set.
 
-```{r, echo=FALSE, eval=FALSE}
+```{r, echo=FALSE, eval=TRUE}
 set.seed(42)
 
 GooglePlayStoreTemp <- GooglePlayStore %>% mutate(id=row_number())
@@ -81,6 +78,7 @@ Test$id <- NULL
 write.csv(Test,"Test.csv",row.names = FALSE)
 rm(Test,GooglePlayStoreTemp)
 ```
+
 
 Exploratory Data Analysis
 ===

@@ -1,5 +1,5 @@
 
-Project 2 presentation
+Project 2 Presentation
 ===
 author: Joseph Audras & Devin Romines
 date: May 13, 2019
@@ -33,12 +33,10 @@ Data Dictionary
 * Last.Updated: Factor - The date on which the app was last updated
 
 
-Data Cleaning
-===
-
 
 
 Because we intend on making a predictive model, here we split the data into a testing and training data set.
+
 
 
 
