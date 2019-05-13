@@ -2,9 +2,7 @@
 title: "Course Project 2"
 author: "Devin Romines and Joseph Audras"
 date: "May 13, 2019"
-output:
-  pdf_document: default
-  html_document: default
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
