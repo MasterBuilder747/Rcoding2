@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE,warning = FALSE,message = FALSE)
 ```
 
-# Introduction
+# I. Introduction
 
 Dataset Source: https://www.kaggle.com/lava18/google-play-store-apps
 
@@ -25,7 +25,7 @@ library(lubridate)
 library(ggplot2)
 ```
 
-# Data Dictionary
+# II. Data Dictionary
 
 * App – Factor, 9660 levels – The name of the app.
 
@@ -53,7 +53,7 @@ library(ggplot2)
 
 * Android.Ver (Removed in Cleaning) – Factor, 35 levels – The version of Android phone required to use the app, given in the form, “version and up”
 
-# Data Cleaning
+# III. Data Cleaning
 
 Here we load the data set.
 
@@ -138,7 +138,7 @@ write.csv(Test,"Test.csv",row.names = FALSE)
 rm(Test,GooglePlayStoreTemp)
 ```
 
-# Exploratory Data Analysis
+# IV. Exploratory Data Analysis
 
 To begin the exploratory data analysis, let's look at the data set as a whole.
 
@@ -186,7 +186,7 @@ ggplot(Train) + geom_boxplot(aes(x=Content.Rating,y=log(Installs)), fill="light 
 ggplot(Train) + geom_point(aes(x=log(Price),y=log(Installs)), color="blue")
 ```
 
-# Conclusion
+# IV. Project 1: Conclusion
 
 It appears from the data that the Reviews variable seems quite positively related to the Ratings variable.  While ratings of 5 can be achieved across all Review amounts, they seem to be more common with higher Review amounts.  The same can be said for the Installs variable, in that the more installations a particular app receives could correlate to the rating it is given.  The Price appears to have essentially the opposite effect.  With the exception of free apps, lower priced apps appear to earn higher rating scores thant more expensive apps.  Content rating does not appear to affect an app's rating.
 
@@ -194,7 +194,7 @@ With regard to the other relationships explored, Content Rating seemd very equal
 
 Moving forward, we feel that the model we are aiming to create should include the Review, Installs, and Price variables, possibly Genres and Category as well.
 
-# Questions to Answer in This Study
+# V. Questions to answer in this study
 
 ## Broad Questions
 
@@ -220,8 +220,7 @@ This question is an attempt to work with the second broad question, looking pure
 
 We will be creating two predictive models for our data set to hopefully predict the user rating.  The first will be based on the number of reviews, number of installations, price, and category, and is hoping to just get a model that is accurate for both the train and test data.  The second model will be based solely on non-user information, such as content rating, category, and price, and will hopefully be able to provide accurate predictions for both the train and test data.
 
-# Modeling/Hypothesis Testing
-
+# VI. Modeling/Hypothesis Testing
 ## Model 1 Unconditional Model Building
 
 ### Model 1.A Random Forest
@@ -319,7 +318,7 @@ rm(Test)
 
 The model performs worse when tested against the test data than to the training data.  This indicates that, as poor as the model fit the training data, it is overfitting the data and is not generalizing all of the data well.  It overestimates the lower user rating scores quite a bit.
 
-# Results
+# VII. Results
 
 It was determined when the models were built and tested that the Random Forest models were superior to the linear models.  This determination was based on how close the data points were to the y=x line on the plots, and how many drastic points there were.  This decision was also based on the performance of the models on the test data, in which the Random Forest models performed as well, if not, better, than on the training dat while the linear model was not able to generalize the data to a satisfactory degree.  There were two final models that were developed.  Model1A, a random forest model, incorporated the Category, Reviews, Installs, and Price variables in order to predict the log of the Rating variable.  Its purpose was to try and unconditionally predict the user rating score.  Model2A, a random forest model, incorporated the Category, Price, and Content.Rating variables in order to predict the log of the Rating variable.  Its purpose was to try and conditionally predict the user rating score, with the condition being that only non-user related data could be used.  In other words, only data that could be collected before the app was released to the market could be used.  Overall, both models did not accurately predict the user rating score very well.
 
@@ -339,6 +338,6 @@ rm(Test)
 
 These plots are the results of the models and their predictions.  Blue models are for training, green models are for testing.  Model 1A is the unconditional model.  Model 2A is the conditional model.
 
-# Discussion and Conclusions
+# VIII. Discussion and Conclusions
 
 Overall, our models were not able to generate very accurate cases.  In both conditions, the models tended to overestimate the user rating scores, especially for those who earned very low rating scores.  While we would like to believe this is due to the model's inherent optimism, we feel that this is due to the majority of the user  rating scores being higher values, resulting in a predictive model which tends to moreso pick higher ratings as its predictions.  Also, it should be noted that having the number of installations and the number of reviews greatly aided in the predictive power of the model.  This indicates that there is a real correlation, however difficult to discern, between user-related info and the user rating score.  The models are not at all decent at what they do; meaning that future work should strive to collect more data from different variable sources to try and more accurately determine a user rating score in advance.  This would in turn force us to understand what makes a good app and what people want in their apps.  Provisionally from this study, we can discern that, on average, a free, highly downloaded, highly reviewed, rated E for Everyone app would most likely lead to a high user rating score.  Our research is important because it shows that there is something to being able to predict a user rating score.  This is because the models, though sad as they might be, are not completely incapable, suggesting some form of correlation somewhere.  Being able to predict a user rating score of an app before it launches could be very helpful to businesses and corporations in deciding which apps they will support, and which they will cast off to the side in favor an app with a better predicted outcome on the market.

@@ -5,7 +5,7 @@ date: May 13, 2019
 autosize: true
 incremental: true
 
-Introduction
+I. Introduction
 ========================================================
 
 Google Play Store Data Set
@@ -21,7 +21,7 @@ Our goal with this data is to build two models that can accurately predict the u
 
 
 
-Data Dictionary
+II. Data Dictionary
 ========================================================
 
 These are the apps we will be looking at.
@@ -33,7 +33,7 @@ These are the apps we will be looking at.
 - Price (Numerical), the price of the app
 - Content.Rating (Factor), the rating for the app, Everyone, Teen, etc.
 
-Data Cleaning
+III. Data Cleaning
 ========================================================
 
 Part 1: Preparing the Data
@@ -49,7 +49,7 @@ GooglePlayStore$Price <- GooglePlayStore$Price/100
 
 
 
-Data Cleaning
+III. Data Cleaning
 ========================================================
 
 Part 2: Splitting the Data
@@ -68,7 +68,7 @@ write.csv(Test,"Test.csv",row.names = FALSE)
 rm(Test,GooglePlayStoreTemp)
 ```
 
-Exploratory Data Analysis
+IV. Exploratory Data Analysis
 ========================================================
 
 Part 1: Reviews vs. Rating
@@ -82,7 +82,7 @@ ggplot(Train) + geom_point(aes(x=log(Reviews),y=Rating), color="blue")
 ![plot of chunk unnamed-chunk-5](Project 2 presentation-figure/unnamed-chunk-5-1.png)
 </font></center>
 
-Exploratory Data Analysis
+IV. Exploratory Data Analysis
 ========================================================
 
 Part 2: Installs vs. Rating
@@ -96,7 +96,7 @@ ggplot(Train) + geom_point(aes(x=log(Installs),y=Rating), color="purple")
 ![plot of chunk unnamed-chunk-6](Project 2 presentation-figure/unnamed-chunk-6-1.png)
 </font></center>
 
-Exploratory Data Analysis
+IV. Exploratory Data Analysis
 ========================================================
 
 Part 3: Price vs. Rating
@@ -110,7 +110,7 @@ ggplot(Train) + geom_point(aes(x=log(Price),y=Rating), color="red")
 ![plot of chunk unnamed-chunk-7](Project 2 presentation-figure/unnamed-chunk-7-1.png)
 </font></center>
 
-Exploratory Data Analysis
+IV. Exploratory Data Analysis
 ========================================================
 
 Part 4: Content Rating vs. Rating
@@ -124,7 +124,7 @@ ggplot(Train) + geom_violin(aes(x=Content.Rating,y=Rating), trim=FALSE, fill="li
 ![plot of chunk unnamed-chunk-8](Project 2 presentation-figure/unnamed-chunk-8-1.png)
 </font></center>
 
-Exploratory Data Analysis
+IV. Exploratory Data Analysis
 ========================================================
 
 Part 5: Conclusions
@@ -136,7 +136,7 @@ Part 5: Conclusions
 
 Moving forward, we feel that the models we are aiming to create should include the Review, Installs, and Price variables, possibly Content Rating and Category as well.
 
-Broad Questions
+V. Broad Questions
 ========================================================
 
 What makes a good app?
@@ -149,7 +149,7 @@ Can we know in advance if an app will be good?
 - Based on characteristics known before an app is released
 - Will be useful for app developers in deciding which apps to support, develop, and market
 
-Narrow Questions
+V. Narrow Questions
 ========================================================
 
 Can we create a model that accurately predicts an app's user rating based on these variables?
@@ -163,7 +163,7 @@ Can we create a model that accurately predicts and app's user rating based purel
 - Price
 - Category
 
-Model Building
+VI. Model Building
 ========================================================
 
 Part 1: Unconditional Random Forest Model
@@ -182,7 +182,7 @@ ggplot(Train) + geom_point(aes(x=Model1.A.Prediction,y=log(Rating)),color = "blu
 ![plot of chunk unnamed-chunk-9](Project 2 presentation-figure/unnamed-chunk-9-1.png)
 </font></center>
 
-Model Building
+VI. Model Building
 ========================================================
 
 Part 2: Conditional Random Forest Model
@@ -200,7 +200,7 @@ ggplot(Train) + geom_point(aes(x=Model2.A.Prediction,y=log(Rating)),color = "blu
 ![plot of chunk unnamed-chunk-10](Project 2 presentation-figure/unnamed-chunk-10-1.png)
 </font></center>
 
-Model Testing
+VI. Model Testing
 ========================================================
 
 Part 1: Unconditional Model Test
@@ -218,7 +218,7 @@ ggplot(Test) + geom_point(aes(x=Model1.A.Prediction.Test,y=log(Rating)),color = 
 ![plot of chunk unnamed-chunk-11](Project 2 presentation-figure/unnamed-chunk-11-1.png)
 </font></center>
 
-Model Testing
+VI. Model Testing
 ========================================================
 
 Part 2: Conditional Model Test
@@ -236,7 +236,7 @@ ggplot(Test) + geom_point(aes(x=Model2.A.Prediction.Test,y=log(Rating)),color = 
 ![plot of chunk unnamed-chunk-12](Project 2 presentation-figure/unnamed-chunk-12-1.png)
 </font></center>
 
-Results
+VII. Results
 ========================================================
 
 Overall, we generated two models, an unconditional model and a conditional model to predict user rating scores.
@@ -245,7 +245,7 @@ Overall, we generated two models, an unconditional model and a conditional model
 - Both models were decent with the test data set
 - Both models did not do well at predicting the user rating
 
-Discussion
+VIII. Discussion and Conclusions
 ========================================================
 
 - The models tended to overestimate low user rating scores, probably because most scores were high
