@@ -1,113 +1,255 @@
-
-Project 2 Presentation
-===
-author: Joseph Audras & Devin Romines
+Modeling User App Rating
+========================================================
+author: Devin Romines and Joseph Audras
 date: May 13, 2019
 autosize: true
-
+incremental: true
 
 Introduction
-===
+========================================================
 
-## Description
-[summarize]
-The Google Play Store Data Set is a data set containing data on over 10,000 apps in the Google Play Store for Android products. The data set looks at things such as rating, number of installations, and genre to produce a plethora of information on each app. For this project, we would like to see if the rating of the app can be accurately predicted by the variables provided in the data set.
+Google Play Store Data Set
 
-[summarize]
-The data set was gathered from https://www.kaggle.com/lava18/google-play-store-apps which was last updated 2 months ago, giving us Version 6, with which we are working.  The data was posted by Lavanya Gupta, a software engineer at HSBC Software Development in India.  More information on her can be found here https://www.kaggle.com/lava18.  The information in the data set was scraped from the Google Play Store by Lavanya Gupta, in an effort to provide similar information on its apps as is publically available from the Apple App Store so that developers may be more inclined to work in the Android market.
+- Contains data on over 10,000 apps
+- Looks at user rating, number of installations, and more
+- Scraped by Lavanya Gupta, a software enginere at HSBC Software Development
+- Last updated 2 months ago
 
+More information about the data set can be found at <https://www.kaggle.com/lava18/google-play-store-apps>.
+
+Our goal with this data is to build two models that can accurately predict the user rating score.
 
 
 
 Data Dictionary
-===
+========================================================
 
-* App - The name of the app.
-* Category: Factor - The general type of app, such as Dating, Cooking, or Art and Design
-* Rating: Numerical - The rating of the app on a scale from 0-5.
-* Reviews: Numerical - The number of reviews that the app received.
-* Installs: Numerical - The number of installations an app received.
-* Price: Numerical - The Price of the app.
-* Content.Rating: Factor - The rating for the app, Everyone, Everyone 10+, Mature 17+, and Teen.
-* Genres: Factor - The genre of the app, Action, Action and Adventure, etc.
-* Last.Updated: Factor - The date on which the app was last updated
+These are the apps we will be looking at.
+
+- Rating (Numerical), the rating of the app on a scale from 0-5
+- Category (Factor), the general type of app, such as Dating, Cooking, or Art and Design
+- Reviews (Numerical), the number of reviews that the app received
+- Installs (Numerical), the number of installations the app received
+- Price (Numerical), the price of the app
+- Content.Rating (Factor), the rating for the app, Everyone, Teen, etc.
+
+Data Cleaning
+========================================================
+
+Part 1: Preparing the Data
+
+For data cleaning, we had to make sure that we converted all variables to the type that they should be, like Installs and Price to numeric, and removing any variables we wouldn't need.
+
+
+```r
+GooglePlayStore$Price <- gsub("[[:punct:]]", "", GooglePlayStore$Price)
+GooglePlayStore$Price <- as.numeric(GooglePlayStore$Price)
+GooglePlayStore$Price <- GooglePlayStore$Price/100
+```
 
 
 
+Data Cleaning
+========================================================
 
-Because we intend on making a predictive model, here we split the data into a testing and training data set.
+Part 2: Splitting the Data
+
+Because we intend on making a predictive model, we split the data into a testing and training data set.
 
 
-
+```r
+set.seed(42)
+GooglePlayStoreTemp <- GooglePlayStore %>% mutate(id=row_number())
+Train <- GooglePlayStoreTemp %>% sample_frac(0.6)
+Test <- GooglePlayStoreTemp %>% anti_join(Train,by="id")
+Train$id <- NULL
+Test$id <- NULL
+write.csv(Test,"Test.csv",row.names = FALSE)
+rm(Test,GooglePlayStoreTemp)
+```
 
 Exploratory Data Analysis
-===
+========================================================
 
+Part 1: Reviews vs. Rating
 
-To begin the exploratory data analysis, let's look at the data set as a whole.
+<center><font size = "5">
 
+```r
+ggplot(Train) + geom_point(aes(x=log(Reviews),y=Rating), color="blue")
+```
 
+![plot of chunk unnamed-chunk-5](Project 2 presentation-figure/unnamed-chunk-5-1.png)
+</font></center>
 
+Exploratory Data Analysis
+========================================================
 
-Exploratory Data Analysis part 2
-===
+Part 2: Installs vs. Rating
 
-Now, let's look at the individual variables.
+<center><font size = "5">
 
+```r
+ggplot(Train) + geom_point(aes(x=log(Installs),y=Rating), color="purple")
+```
 
+![plot of chunk unnamed-chunk-6](Project 2 presentation-figure/unnamed-chunk-6-1.png)
+</font></center>
 
+Exploratory Data Analysis
+========================================================
 
-Exploratory Data Analysis part 3
-===
+Part 3: Price vs. Rating
 
-Now, let's look at some of the relationships between the other variables.
+<center><font size = "5">
 
+```r
+ggplot(Train) + geom_point(aes(x=log(Price),y=Rating), color="red")
+```
 
+![plot of chunk unnamed-chunk-7](Project 2 presentation-figure/unnamed-chunk-7-1.png)
+</font></center>
 
+Exploratory Data Analysis
+========================================================
+
+Part 4: Content Rating vs. Rating
+
+<center><font size = "5">
+
+```r
+ggplot(Train) + geom_violin(aes(x=Content.Rating,y=Rating), trim=FALSE, fill="light blue")
+```
+
+![plot of chunk unnamed-chunk-8](Project 2 presentation-figure/unnamed-chunk-8-1.png)
+</font></center>
+
+Exploratory Data Analysis
+========================================================
+
+Part 5: Conclusions
+
+- Reviews and Rating are positively related
+- Installs and Rating are positively related
+- Price and Rating are negatively related
+- Content Rating and Rating to not appear to be related
+
+Moving forward, we feel that the models we are aiming to create should include the Review, Installs, and Price variables, possibly Content Rating and Category as well.
 
 Broad Questions
-===
+========================================================
 
-### What makes a good app?
+What makes a good app?
 
-[points]
-We are interested in seeing what attributes or characteristics, if any, of a particular app affect how "good" it is.  Now, "good" is a highly subjective term and with the variety of apps that exist out there, we cannot generalize them into a category of "good" and "bad".  However, for the purposes of our look into this matter, we will be defining the "good"-ness of an app by its rating on a 5 point scale.  This allows us to quantify, to some degree of accuracy, how installers felt about their experience with the app.
+- An app's "good"ness will be determined by the user rating score
+- Creating a predictive model will show us if any app characteristics contribute to its "goodness"
 
-### Can we know in advance if an app will be good?
+Can we know in advance if an app will be good?
 
-This question is the other side of the coin to the previous question.  Basically, if we know certain characteristics about an app, like genre, price, or content rating, then we can determine how well it will be rated by installers.  We would like to know if this can be done with any of the variables in our data set.
-
+- Based on characteristics known before an app is released
+- Will be useful for app developers in deciding which apps to support, develop, and market
 
 Narrow Questions
-===
+========================================================
 
-## Can we create a model that accurately predicts an app's user rating based on the number of reviews, number of installations, and price?
+Can we create a model that accurately predicts an app's user rating based on these variables?
 
-After exploring the data set, we found the number of reviews, number of installations, and price to have a somewhat apparent correlation with the app's user rating.  Now, we would like to see if a model can accurately predict that rating while using those variables.
+- Number of reviews and installations
+- Price and Category
 
-## Can we create a model that accurately predicts and app's user rating based purely on variables that would be known before the app is released, such as content rating, price, or genre.?
+Can we create a model that accurately predicts and app's user rating based purely on variables that would be known before the app is released?
 
-This question is an attempt to work with the second broad question, looking purely at information about an app that does not require user data.  Such a model would be useful for app developers that wish to have some idea at an app's success before it hits the market.  This could guide their decisions on what apps to support, develop, and market.
+- Content Rating
+- Price
+- Category
 
-## Discussion
+Model Building
+========================================================
 
-We will be creating two predictive models for our data set to hopefully predict the user rating.  The first will be based on the number of reviews, number of installations, and price, and is hoping to just get a model that is accurate for both the train and test data.  The second model will be based solely on non-user information, such as content rating, genre, and price, and will hopefully be able to provide accurate predictions for both the train and test data.
+Part 1: Unconditional Random Forest Model
 
-## Modeling/Hypothesis Testing
+<center><font size = "4">
 
-Model 1 (reviews, installs, and price)
+```r
+library(randomForest)
+set.seed(42)
+Model1.A <- randomForest(I(log(Rating)) ~ Reviews + Installs + Price + Category, data = Train, mtry = 4)
+Model1.A.Prediction <- predict(Model1.A)
+ggplot(Train) + geom_point(aes(x=Model1.A.Prediction,y=log(Rating)),color = "blue") +
+  geom_abline(intercept = 0, color = "red")
+```
 
+![plot of chunk unnamed-chunk-9](Project 2 presentation-figure/unnamed-chunk-9-1.png)
+</font></center>
 
+Model Building
+========================================================
 
+Part 2: Conditional Random Forest Model
 
+<center><font size = "4">
 
-Conclusion
-===
+```r
+set.seed(42)
+Model2.A <- randomForest(I(log(Rating)) ~ Price + Category + Content.Rating, data = Train, mtry = 3)
+Model2.A.Prediction <- predict(Model2.A)
+ggplot(Train) + geom_point(aes(x=Model2.A.Prediction,y=log(Rating)),color = "blue") +
+  geom_abline(intercept = 0, color = "red")
+```
 
-[summarize]
-It appears from the data that the Reviews variable seems quite positively related to the Ratings variable.  While ratings of 5 can be achieved across all Review amounts, they seem to be more common with higher Review amounts.  The same can be said for the Installs variable, in that the more installations a particular app receives could correlate to the rating it is given.  The Price appears to have essentially the opposite effect.  With the exception of free apps, lower priced apps appear to earn higher rating scores thant more expensive apps.  Content rating does not appear to affect an app's rating.
+![plot of chunk unnamed-chunk-10](Project 2 presentation-figure/unnamed-chunk-10-1.png)
+</font></center>
 
-With regard to the other relationships explored, Content Rating seemd very equal across app installations, with apps rated as Everyone had the most variance, probably due to the fact that most of the apps in the data set are rated Everyone, as seen by the Content Rating bar plot earlier.  When price was compared to installations, an almost bubble appeared in the bottom right portion of the plot, indicating that less expensive apps might warrent more installations from users.
+Model Testing
+========================================================
 
-Moving forward, we feel that the model we are aiming to create should include the Review, Installs, and Price variables, possibly Genres and Category as well.
+Part 1: Unconditional Model Test
 
+<center><font size = "4">
+
+```r
+Test <- read.csv("Test.csv")
+levels(Test$Category) <- levels(Train$Category)
+Model1.A.Prediction.Test <- predict(Model1.A,newdata=Test)
+ggplot(Test) + geom_point(aes(x=Model1.A.Prediction.Test,y=log(Rating)),color = "green") +
+  geom_abline(intercept = 0, color = "red")
+```
+
+![plot of chunk unnamed-chunk-11](Project 2 presentation-figure/unnamed-chunk-11-1.png)
+</font></center>
+
+Model Testing
+========================================================
+
+Part 2: Conditional Model Test
+
+<center><font size = "4">
+
+```r
+levels(Test$Category) <- levels(Train$Category)
+levels(Test$Content.Rating) <- levels(Train$Content.Rating)
+Model2.A.Prediction.Test <- predict(Model2.A,newdata=Test)
+ggplot(Test) + geom_point(aes(x=Model2.A.Prediction.Test,y=log(Rating)),color = "green") +
+  geom_abline(intercept = 0, color = "red")
+```
+
+![plot of chunk unnamed-chunk-12](Project 2 presentation-figure/unnamed-chunk-12-1.png)
+</font></center>
+
+Results
+========================================================
+
+Overall, we generated two models, an unconditional model and a conditional model to predict user rating scores.
+
+- Random Forest Models were better than Linear Models
+- Both models were decent with the test data set
+- Both models did not do well at predicting the user rating
+
+Discussion
+========================================================
+
+- The models tended to overestimate low user rating scores, probably because most scores were high
+- The number of installations and reviews were the most powerful predictors
+- Future work should collect more data from different variables to try and find better connections
+- From these models, free, highly downloaded, highly reviewed, rated E apps will get the highest user rating
+- Our research shows that there is a correlation somewhere, and with more research, perhaps the information could be useful to businesses

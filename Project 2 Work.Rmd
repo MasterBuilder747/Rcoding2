@@ -1,6 +1,6 @@
 ---
 title: "Course Project 2"
-author: "Joseph Audras and Devin Romines"
+author: "Devin Romines and Joseph Audras"
 date: "May 13, 2019"
 output:
   pdf_document: default
